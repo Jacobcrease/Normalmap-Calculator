@@ -21,11 +21,14 @@ def NC():
 
     '''blur on or off?'''
     blur_switch = 1
+
+    '''Fast and rough Ambient Occlusion?'''
+    thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,31,21)
+    cv2.imwrite(input_name[:len(input_name)-4]+"_notfinished_AO.png",thresh)
     
     '''the next part is for blurring image a bit,
     but leaving the edged sharp. '''
     if blur_switch == 1:
-        thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,31,21)
         not_thresh = cv2.bitwise_not(thresh)
         th1 = cv2.GaussianBlur(gray, (11,11), 0)
         th1 = cv2.bitwise_and(th1, th1, mask = thresh)
