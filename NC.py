@@ -8,7 +8,7 @@ import cv2
 #@profile
 def NC():
     '''Put file name here'''
-    input_name = "demo.jpg"
+    input_name = "demo.png"
 
     pic = cv2.imread(input_name,1)
     gray = cv2.imread(input_name,0)
