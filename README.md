@@ -12,6 +12,8 @@ For the next part it uses the sobel operator for edge detection.
 With the help of linear algebra and numpy this data is used to calculate the normalmap.
 
 ## Example
+Stone surface photographed and modified by me.
+
 ### input
 ![input](Example/demo.png)
 
