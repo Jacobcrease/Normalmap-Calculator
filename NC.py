@@ -7,11 +7,11 @@ import cv2
 
 #@profile
 def NC():
+    '''Put file name here'''
     input_name = "demo.jpg"
 
     pic = cv2.imread(input_name,1)
     gray = cv2.imread(input_name,0)
-    _, th2 = cv2.threshold(gray,0,150,cv2.THRESH_BINARY)
     height, width, _ = pic.shape
 
     '''for less extreme values set it lower
@@ -19,7 +19,23 @@ def NC():
     bmp_percent = 0.5
     nrm_percent = 0.7
 
-    bump = gray
+    '''blur on or off?'''
+    blur_switch = 1
+    
+    '''the next part is for blurring image a bit,
+    but leaving the edged sharp. '''
+    if blur_switch == 1:
+        thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,31,21)
+        not_thresh = cv2.bitwise_not(thresh)
+        th1 = cv2.GaussianBlur(gray, (11,11), 0)
+        th1 = cv2.bitwise_and(th1, th1, mask = thresh)
+        th2 = cv2.bitwise_and(gray, gray, mask = not_thresh)
+        bump = cv2.add(th1, th2)
+
+    else:
+        bump = gray
+
+    '''reduces contrast'''
     bump = (np.ones((height,width),dtype = np.uint16)*200*(1-bmp_percent) + bump*bmp_percent)
 
     '''bmp pic can be modified for bump or roughness'''
@@ -43,7 +59,6 @@ def NC():
     '''1 color for each pixel (3 dimensional array per pixel)
     x/y value is 1 z value is pixel_x/pixel_y
     this leads to a color change only if the is an horizontal/vertical edge'''
-
     dx = np.zeros((height,width,3),dtype = np.float64)
     dx[:,:,0] = ones
     dx[:,:,2] = pixel_x
@@ -77,6 +92,8 @@ def NC():
      y is green between 0 and 256'''
     
     blue = np.array([255,127,127])
+
+    '''flatens normal'''
     dcross = (dcross*nrm_percent + blue*(1-nrm_percent))
     color_matrix = dcross.astype(np.uint8)
 
