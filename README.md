@@ -10,3 +10,13 @@ It could be more precise, but it's fast.
 The first step is to generate a grayscale.
 For the next part it uses the sobel operator for edge detection.
 With the help of linear algebra and numpy this data is used to calculate the normalmap.
+
+## Example
+### input
+![input](Example/demo.png)
+
+### output
+![output](Example/demo_nrm.png)
+
+### Complete material, with circling lightsource
+![Complete material, with circling lightsource](Example/showcase.gif)
